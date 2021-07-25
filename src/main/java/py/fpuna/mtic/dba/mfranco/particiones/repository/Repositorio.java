@@ -167,7 +167,7 @@ public class Repositorio {
         Integer numPart;
         Map<String, Integer> results = new HashMap<>();
         ApplicationHome home = new ApplicationHome(ParticionesApplication.class);
-        String fullFilename = home.getSource().getAbsolutePath() + File.separator + filename;
+        String fullFilename = home.getDir().getAbsolutePath() + File.separator + filename;
         try {
             in = new FileReader(fullFilename);
         }catch (FileNotFoundException e){

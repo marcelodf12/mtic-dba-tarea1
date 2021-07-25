@@ -1,5 +1,7 @@
 package py.fpuna.mtic.dba.mfranco.particiones.rest;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.system.ApplicationHome;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,8 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "**")
 @RequestMapping("api/")
 public class RestServices {
+
+    protected final Log logger = LogFactory.getLog(this.getClass());
 
     @Autowired
     Repositorio repositorio;
@@ -63,8 +67,9 @@ public class RestServices {
     @RequestMapping("pathInfo")
     public ResponseEntity<List<String>> pathInfo(){
         ApplicationHome home = new ApplicationHome(ParticionesApplication.class);
-        String path = home.getSource().getAbsolutePath();
+        String path = home.getDir().getAbsolutePath()+File.separator;
         File carpeta = new File(path);
+        logger.info("Los archivos csv deben estar en la ruta: " + path);
         List<String> lista = Arrays.stream(carpeta.list()).filter(s -> s.endsWith(".csv")).collect(Collectors.toList());
         return ResponseEntity.ok().body(lista);
     }
