@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DBA T1 Mfranco</title>
+    <meta name="description" content="Tarea 1. DBA MTIC">
+    <meta name="author" content="Marcelo Franco">
+    <link rel="stylesheet" href="css/bulma.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<!-- START NAV -->
+<nav class="navbar is-white">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item brand-text">
+                Marcelo Franco
+            </a>
+            <div class="navbar-burger burger" data-target="navMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+</nav>
+<!-- END NAV -->
+<div class="container">
+    <div class="columns">
+        <div class="column is-3 ">
+            <aside class="menu is-hidden-mobile">
+                <p class="menu-label">
+                    Menú
+                </p>
+                <ul class="menu-list">
+                    <li><a id="menu-crear-tabla" onclick="crearTablaShow();">Crear nueva tabla</a></li>
+                    <li><a id="menu-refrescar-tablas" onclick="consultarTablas();">Refrescar tablas</a></li>
+                    <li><a id="menu-refrescar-tablas" onclick="consultarDocumentos();">Refrescar documentos</a></li>
+                </ul>
+
+                <p class="menu-label">
+                    Selecionar tabla
+                </p>
+                <ul class="menu-list"  id="menu-seleccionar-tablas">
+                </ul>
+                <p class="menu-label" id="menu-acciones-tabla">
+                    Seleccione una tabla
+                </p>
+                <ul class="menu-list" id="menu-acciones-tabla-items">
+                    <li><a id="menu-particionar-tabla" onclick="particionarTablaShow()">Particionar tabla</a></li>
+                    <li><a id="menu-importar-datos">Importar datos</a>
+                    <ul id="menu-archivos-disponibles">
+                    </ul></li>
+                    <li><a id="menu-eliminar-particiones" onclick="desParticionarTabla()">Eliminar Particiones</a></li>
+                    <li><a id="menu-resetear-tabla" onclick="resetearTabla()">Resetear tabla</a></li>
+                </ul>
+            </aside>
+        </div>
+        <div class="column is-9">
+            <section class="hero is-info welcome is-small">
+                <div class="hero-body">
+                    <div class="container">
+                        <h1 class="title">
+                            Base de datos avanzadas. MTIC
+                        </h1>
+                        <h2 class="subtitle">
+                            Tarea 1 
+                        </h2>
+                    </div>
+                </div>
+            </section>
+            <section class="info-tiles">
+                <div class="card" id="card-crear-tabla">
+                    <header class="card-header">
+                        <p class="card-header-title">
+                            Crear nueva tabla
+                        </p>
+                    </header>
+                    <div class="card-content">
+                        <div class="content">
+                            <div class="control" >
+                                <input  class="input is-large" type="text" placeholder="Nombre de tabla" id="input-nombre-tabla">
+                            </div><br>
+                            <a class="button is-large is-primary" id="btn-crear-tabla" onclick="crearTabla()">Crear</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" id="card-particionar-tabla">
+                    <header class="card-header">
+                        <p class="card-header-title" id="lbl-cantidad-particiones">
+                            Particionar tabla .......
+                        </p>
+                    </header>
+                    <div class="card-content">
+                        <div class="content">
+                            <div class="control" >
+                                <input  class="input is-large" type="text" placeholder="Número de particiones" id="input-cantidad-particiones">
+                            </div><br>
+                            <a class="button is-large is-primary" id="btn-particionar" onclick="particionarTabla()">Crear</a>
+                        </div>
+                    </div>
+                </div>
+
+                           
+            </section>
+            <div class="columns">
+                <div class="column is-12">
+                    <div class="card" id="card-info-tabla">
+                        <header class="card-header">
+                            <p class="card-header-title" id="lbl-titulo-tabla">
+                                Tabla .......
+                            </p>
+                        </header>
+                        <div class="card-content">
+                            <div class="content" >
+                                <p  id="lbl-info-tabla">
+                                    ------------------<br>
+                                    tarea: 150<br>
+                                    ------------------<br>
+                                    tarea_part0: 30<br>
+                                    tarea_part1: 30<br>
+                                    tarea_part2: 30<br>
+                                    tarea_part3: 30<br>
+                                    tarea_part4: 30<br>
+                                    ------------------<br>
+                                </p>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+                <!--div class="column is-7" id="card-records-tabla">
+                    <div class="card events-card">
+                        <header class="card-header">
+                            <p class="card-header-title">
+                                Registros
+                            </p>
+                        </header>
+                        <div class="card-content">
+                            <div class="card-table">
+                                <div class="content">
+                                    <table class="table is-fullwidth is-striped">
+                                        <tbody  id="registros-tabla">
+                                        <tr>
+                                            <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                            <td>Lorum ipsum dolem aire</td>
+
+                                        </tr>
+                                        <tr>
+                                            <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                            <td>Lorum ipsum dolem aire</td>
+
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div-->
+                
+            </div>
+        </div>
+    </div>
+</div>
+<script src="scripts.js"></script>
+</body>
+</html>
