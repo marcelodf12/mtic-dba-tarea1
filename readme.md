@@ -65,16 +65,19 @@ userId,movieId,rating,timestamp
 ## Funcionamiento interno del sistema
 El sistema utiliza el framework Spring Boot de Java y se conecta a la base de datos mediante Hibernate, aunque el 100% de las consultas se realizan como consultas nativas (createNativeQuery) ya que solo de esta forma se pueden ejecutar consultas DDL. 
 La definición de las tablas creadas tiene la siguiente estructura:
+
 ![Record Structure](./doc/img/08-structure-table-record.png)
 
-
 La simulación de la partición horizontal se realiza creando N sub-tablas de partición:
+
 ![Partitions](./doc/img/09-partitions.png)
  
 Además, se utiliza una tabla adicional PARTITION_INFO que almacena la información de las particiones creadas (Esta es creada automáticamente si no existe):
+
 ![Partition Info Structure](./doc/img/10-structure-partition-info.png)
   
 En la columna TABLE_NAME se almacena el nombre de la tabla y en la columna NUM_PART se almacena el número de particiones, en caso de que la tabla aún no esté particionada esta columna tendrá el valor null.
+
 ![Example Info Structure](./doc/img/11-example-partition-info.png)
 
 El mecanismo de balanceo entre las particiones se realiza mediante el módulo de la columna ID, esté módulo indica a que partición debe ir, como la columna ID es autonumérica usando el módulo se simula un Round Robin.
