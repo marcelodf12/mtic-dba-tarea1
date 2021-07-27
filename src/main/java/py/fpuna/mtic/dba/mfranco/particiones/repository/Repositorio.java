@@ -13,9 +13,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.io.*;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.Instant;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -71,8 +70,16 @@ public class Repositorio {
         }
     };
 
+    public List<String>  getDocumentos(){
+        ApplicationHome home = new ApplicationHome(ParticionesApplication.class);
+        String path = home.getDir().getAbsolutePath()+File.separator;
+        File carpeta = new File(path);
+        logger.info("Los archivos csv deben estar en la ruta: " + path);
+        return Arrays.stream(carpeta.list()).filter(s -> s.endsWith(".csv")).collect(Collectors.toList());
+    }
+
     @Transactional
-    public String countTables(String tableName){
+    public String resumen(String tableName){
         logger.info("Contar tablas");
         String sql = "Select count(*) FROM ##tableName##;";
 
@@ -204,6 +211,25 @@ public class Repositorio {
         return results.entrySet().stream()
                 .map(entry -> entry.getKey() + entry.getValue())
                 .collect(Collectors.joining("\n" , "" , ""));
+    }
+
+    @Transactional
+    public String insertNewRecord(String tableName, Integer userId, Integer movieId, Number rating) {
+        String currentTimestamp = Long.toString(Instant.now().toEpochMilli());
+        currentTimestamp = currentTimestamp.substring(0, currentTimestamp.length() - 3);
+        Integer numPart;
+        String r;
+        try {
+            numPart = (Integer) em.createNativeQuery(sqlGetNumPart.replaceAll("##tableName##", tableName)).getSingleResult();
+        }catch (Exception e){
+            return "La tabla " + tableName + " no existe";
+        }
+        try{
+            r = this.insertRecord(tableName, numPart, userId, movieId, rating, currentTimestamp) + "\n- userId=" +userId+ "\n- movieId=" +movieId+ "\n- rating=" +rating+ "\n- timestamp="+currentTimestamp;
+        }catch (Exception e) {
+            return "Ocurrio un error al grabar el registro nuevo";
+        }
+        return r;
     }
 
     public String insertRecord(String tableName, Integer numPart, Integer userId, Integer movieId, Number rating, String timestamp){

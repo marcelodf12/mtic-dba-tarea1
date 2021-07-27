@@ -3,18 +3,12 @@ package py.fpuna.mtic.dba.mfranco.particiones.rest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.system.ApplicationHome;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import py.fpuna.mtic.dba.mfranco.particiones.ParticionesApplication;
 import py.fpuna.mtic.dba.mfranco.particiones.repository.Repositorio;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "**")
@@ -64,13 +58,9 @@ public class RestServices {
     }
 
     @GetMapping
-    @RequestMapping("pathInfo")
-    public ResponseEntity<List<String>> pathInfo(){
-        ApplicationHome home = new ApplicationHome(ParticionesApplication.class);
-        String path = home.getDir().getAbsolutePath()+File.separator;
-        File carpeta = new File(path);
-        logger.info("Los archivos csv deben estar en la ruta: " + path);
-        List<String> lista = Arrays.stream(carpeta.list()).filter(s -> s.endsWith(".csv")).collect(Collectors.toList());
+    @RequestMapping("getDocuments")
+    public ResponseEntity<List<String>> getDocuments(){
+        List<String> lista = this.repositorio.getDocumentos();
         return ResponseEntity.ok().body(lista);
     }
 
@@ -81,11 +71,23 @@ public class RestServices {
     }
 
     @GetMapping
-    @RequestMapping("countTable/{tableName}")
-    public ResponseEntity<String> countTables(
+    @RequestMapping("resumen/{tableName}")
+    public ResponseEntity<String> resumen(
             @PathVariable("tableName") String tableName
     ){
-        return ResponseEntity.ok().body(this.repositorio.countTables(tableName));
+        return ResponseEntity.ok().body(this.repositorio.resumen(tableName));
+    }
+
+    @PostMapping
+    @RequestMapping("insertRecord/{tableName}")
+    public ResponseEntity<String> insertRecord(
+            @PathVariable("tableName") String tableName,
+            @RequestParam(name = "userId") Integer userId,
+            @RequestParam(name = "movieId") Integer movieId,
+            @RequestParam(name = "rating") Number rating
+    ){
+        String r = this.repositorio.insertNewRecord(tableName, userId, movieId, rating);
+        return ResponseEntity.ok().body(r);
     }
 
 }

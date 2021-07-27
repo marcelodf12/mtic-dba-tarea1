@@ -9,7 +9,8 @@ var spinner = '<div class="loading"></div>';
 var elementos = [
     "card-crear-tabla",
     "card-particionar-tabla",
-    "card-info-tabla"
+    "card-info-tabla",
+    "card-registro-nuevo"
 ]
 
 ocultarTodo = () => {
@@ -35,12 +36,17 @@ particionarTablaShow = () => {
     document.getElementById("lbl-cantidad-particiones").innerHTML = `Particionar tabla ${tablaSeleccionada}`;
 };
 
+insertarNuevoRegistroShow = () => {
+    ocultarTodo();
+    document.getElementById("card-registro-nuevo").style.display = 'block';
+};
+
 infoTablaShow = () => {
     ocultarTodo();
     document.getElementById("card-info-tabla").style.display = 'block';
     document.getElementById("lbl-titulo-tabla").innerHTML = 'Tabla ' +  tablaSeleccionada;
     document.getElementById("lbl-info-tabla").innerHTML = spinner;
-    fetch(host + `countTable/${tablaSeleccionada}`)
+    fetch(host + `resumen/${tablaSeleccionada}`)
     .then(response => response.text())
     .then(data => {
         document.getElementById("lbl-info-tabla").innerHTML = data.split("\n").join("<br>");
@@ -123,6 +129,33 @@ crearTabla = () => {
     }
 };
 
+nuevoRegistro = () => {
+    ocultarTodo();
+    document.getElementById("card-info-tabla").style.display = 'block';
+    formNuevoRegistro = document.getElementById("input-id-user");
+    idUser = document.getElementById("input-id-user").value;
+    idMovie = document.getElementById("input-id-movie").value;
+    rating = document.getElementById("input-rating").value;
+    document.getElementById("lbl-titulo-tabla").innerHTML = 'Tabla ' +  tablaSeleccionada;
+    if(formNuevoRegistro.checkValidity() && (rating * 10) % 5 == 0 ){
+        document.getElementById("lbl-info-tabla").innerHTML = spinner;
+        fetch(host + `insertRecord/${tablaSeleccionada}?userId=${idUser}&movieId=${idMovie}&rating=${rating}`, {method: 'POST'})
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("lbl-info-tabla").innerHTML = data.split("\n").join("<br>");
+        });
+    }else{
+        document.getElementById("lbl-info-tabla").innerHTML =
+         `
+            - Todos los campos son obligatorios
+            - El id de usuario es numérico
+            - El id de la película es numérico
+            - La calificación puede ser del 1 al 5 con incremento de 0.5
+         
+         `
+    }
+};
+
 resetearTabla = () => {
     ocultarTodo();
     document.getElementById("card-info-tabla").style.display = 'block';
@@ -167,7 +200,7 @@ consultarDocumentos = () => {
         menu.removeChild(menu.firstChild);
     }
 
-    fetch(host + "pathInfo")
+    fetch(host + "getDocuments")
     .then(response => response.json())
     .then(data => {
         data.forEach(doc => {

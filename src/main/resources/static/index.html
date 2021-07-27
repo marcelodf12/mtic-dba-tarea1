@@ -53,6 +53,7 @@
                     <li><a id="menu-importar-datos">Importar datos</a>
                     <ul id="menu-archivos-disponibles">
                     </ul></li>
+                    <li><a id="menu-particionar-tabla" onclick="insertarNuevoRegistroShow()">Insertar registro nuevo</a></li>
                     <li><a id="menu-eliminar-particiones" onclick="desParticionarTabla()">Eliminar Particiones</a></li>
                     <li><a id="menu-resetear-tabla" onclick="resetearTabla()">Resetear tabla</a></li>
                 </ul>
@@ -127,6 +128,29 @@
                                     tarea_part4: 30<br>
                                     ------------------<br>
                                 </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" id="card-registro-nuevo">
+                        <header class="card-header">
+                            <p class="card-header-title" id="lbl-titulo-registro-nuevo">
+                                Crear nuevo registro
+                            </p>
+                        </header>
+                        <div class="card-content">
+                            <div class="content" >
+                                <form action="" id="form-nuevo-registro">
+                                    <div class="control" >
+                                        <input  class="input is-large" type="number" placeholder="ID de usuario" id="input-id-user" required>
+                                    </div><br>
+                                    <div class="control" >
+                                        <input  class="input is-large" type="number" placeholder="ID de película" id="input-id-movie" required>
+                                    </div><br>
+                                    <div class="control" >
+                                        <input  class="input is-large" type="number" placeholder="Calificación" id="input-rating" min="1" max="5" step="0.5" required>
+                                    </div><br>
+                                    <a class="button is-large is-primary" id="btn-particionar" type="submit" onclick="nuevoRegistro()">Insertar</a>
+                                </form>
                             </div>
                         </div>
                     </div>  
